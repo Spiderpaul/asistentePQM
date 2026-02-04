@@ -7,16 +7,11 @@ import os
 # 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(page_title="PQM Assistant", page_icon="🥩", layout="centered")
 
-# 2. CONFIGURACIÓN DE SEGURIDAD (API KEY DESDE SECRETS)
-# Cambiamos esto para que use los Secrets que configuramos en Streamlit Cloud
+# 2. CONFIGURACIÓN DE SEGURIDAD (API KEY)
 try:
-    # Intenta leer la clave desde los "Secrets" de Streamlit Cloud
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 except:
-    # Si falla (por ejemplo, cuando estás probando en tu PC local)
-    # Aquí puedes poner tu clave temporalmente solo para pruebas locales
-    # Pero asegúrate de no subirla a GitHub
-    GOOGLE_API_KEY = "TU_CLAVE_LOCAL_TEMPORAL"
+    GOOGLE_API_KEY = "TU_API_KEY_LOCAL" 
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -29,10 +24,10 @@ def leer_pdf(archivo):
             t = pagina.extract_text()
             if t: texto += t + "\n"
         return texto
-    except Exception as e:
+    except Exception:
         return None
 
-# 4. INICIALIZACIÓN
+# 4. INICIALIZACIÓN DE ESTADOS
 if "mensajes" not in st.session_state:
     st.session_state.mensajes = []
 
@@ -40,96 +35,83 @@ if "inventario_texto" not in st.session_state:
     ruta_base = "data/precios.pdf"
     if os.path.exists(ruta_base):
         st.session_state.inventario_texto = leer_pdf(ruta_base)
-        st.session_state.origen = "Servidor (GitHub)"
+        st.session_state.origen = "GitHub"
     else:
         st.session_state.inventario_texto = None
         st.session_state.origen = "Ninguno"
 
-# 5. BARRA LATERAL
+# 5. BARRA LATERAL (ADMIN)
 with st.sidebar:
-    st.header("⚙️ Configuración")
-    password = st.text_input("Clave de Admin", type="password")
+    st.header("⚙️ Admin")
+    password = st.text_input("Contraseña", type="password")
     if password == "PQM2026":
-        archivo_nuevo = st.file_uploader("Actualizar Inventario", type="pdf")
+        archivo_nuevo = st.file_uploader("Subir PDF", type="pdf")
         if archivo_nuevo:
             st.session_state.inventario_texto = leer_pdf(archivo_nuevo)
-            st.session_state.origen = "Carga Manual"
-            st.success("¡Actualizado!")
-    
+            st.session_state.origen = "Manual"
+            st.success("Inventario actualizado")
     st.divider()
-    if st.button("Borrar historial"):
+    if st.button("Limpiar Chat"):
         st.session_state.mensajes = []
         st.rerun()
 
 # 6. INTERFAZ DE CHAT
 st.title("🥩 PQM Assistant")
 
-# Creamos un contenedor para los mensajes
+# Contenedor de mensajes con scroll
 chat_container = st.container()
-
-# Renderizamos los mensajes en el contenedor
 with chat_container:
     for m in st.session_state.mensajes:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# 7. ÁREA DE ENTRADA (MICROFONO Y TEXTO)
-# Creamos un espacio visual
-st.write("") 
+# 7. ENTRADA FIJA (MICRO Y TEXTO)
+st.write("---")
+# Usamos columnas para que el micro esté junto al texto
+c1, c2 = st.columns([1, 4])
 
-# Usamos columnas con proporciones para que el micro tenga su espacio
-# La proporción [1, 5] le da un buen tamaño al botón sin estorbar
-col_mic, col_txt = st.columns([1, 5])
-
-with col_mic:
-    # Botón de micrófono más visible
+with c1:
+    # Botón más grande con texto
     audio_data = mic_recorder(
-        start_prompt="🎤 HABLAR", # Texto más largo para que el botón crezca
-        stop_prompt="🛑 PARAR",
+        start_prompt="🎤 HABLAR", 
+        stop_prompt="🛑 PARAR", 
         key='recorder'
     )
 
-with col_txt:
-    # El chat_input siempre se ancla al fondo automáticamente por Streamlit
+with c2:
     prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
-# El chat_input SIEMPRE es fijo por defecto en Streamlit
-prompt_texto = st.chat_input("Escribe tu duda aquí...")
-
-# LÓGICA DE PROCESAMIENTO
+# 8. LÓGICA DE PROCESAMIENTO
 if prompt_texto or audio_data:
-    prompt_usuario = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
+    prompt_visible = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
     
-    st.session_state.mensajes.append({"role": "user", "content": prompt_usuario})
+    st.session_state.mensajes.append({"role": "user", "content": prompt_visible})
     with chat_container:
         with st.chat_message("user"):
-            st.markdown(prompt_usuario)
+            st.markdown(prompt_visible)
 
     if st.session_state.inventario_texto:
         with chat_container:
             with st.chat_message("assistant"):
-                with st.spinner("Consultando inventario..."):
+                with st.spinner("Buscando..."):
                     try:
-                        model = genai.GenerativeModel('models/gemini-2.5-flash')
+                        model = genai.GenerativeModel('models/gemini-1.5-flash')
                         
                         instruccion = f"""
                         Eres el asistente experto de PQM. 
                         REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
-                        IMPORTANTE: No muestres la lista completa de precios, solo responde a la pregunta que se te hace. 
-                        Si no encuentras un producto, puedes decir que no lo encontraste, que intenten con un sinónimo del producto.
-                        Los productos pueden tener variaciones en sus nombres, por ejemplo:
-                        -Top clod, es shoulder clod. 
-                        -Oxtail, es cola de res o colita.
-                        -Ground beef, es carne molida o molida de res.
-                        -Scalded tripe, es menudo.
-                        -Etc.
-                        Tienes libertad para preguntar si se refieren a un producto u otro si no estás seguro de que producto es el que se busca.
-                        Si la persona escribe solo el nombre del producto, por ejemplo "pechuga", escribes los nombres de productos que coincidan, sus pesos, marcas y precios (dando por hecho que el usuario quiere saber toda la información relacionada con el producto). 
+                        SINOPSIS/SINÓNIMOS:
+                        - Top clod = Shoulder clod.
+                        - Oxtail = Cola de res o colita.
+                        - Ground beef = Carne molida.
+                        - Scalded tripe = Menudo.
+                        
+                        Si solo dicen un producto (ej. "pechuga"), da TODA la info: marca, peso y precio.
+                        Si no encuentras algo, sugiere un sinónimo o pregunta para aclarar.
                         Responde en el idioma que te hablen basándote en:
                         {st.session_state.inventario_texto}
                         """
                         
-                        # Preparamos el contenido mezclando instrucción + audio/texto
                         if audio_data:
                             contenido = [instruccion, {"mime_type": "audio/wav", "data": audio_data['bytes']}]
                         else:
@@ -138,20 +120,12 @@ if prompt_texto or audio_data:
                         respuesta = model.generate_content(contenido)
                         st.markdown(respuesta.text)
                         st.session_state.mensajes.append({"role": "assistant", "content": respuesta.text})
+                        
                     except Exception as e:
                         error_msg = str(e)
-                        
-                        # Primero revisamos si es un error de límite de tiempo/cuota (429)
                         if "429" in error_msg or "quota" in error_msg.lower():
-                            aviso_espera = "⚠️ **PQM Assistant está tomando un respiro.** \n\nHemos alcanzado el límite de consultas por minuto. Por favor, **espera 30 segundos** y vuelve a intentarlo. 🥩"
-                            st.warning(aviso_espera)
-                        
-                        # Si es un error de "Contenido bloqueado" (por seguridad de Google)
-                        elif "safety" in error_msg.lower():
-                            st.error("No puedo responder a eso por políticas de seguridad. Intenta preguntar de otra forma.")
-                        
-                        # Para cualquier otro error desconocido
+                            st.warning("⚠️ **Límite alcanzado.** Espera 30 segundos y vuelve a intentar. 🥩")
                         else:
-                            st.error(f"Hubo un problema técnico: {error_msg}")
+                            st.error(f"Error técnico: {error_msg}")
     else:
         st.warning("⚠️ No hay inventario cargado.")
