@@ -4,10 +4,9 @@ from PyPDF2 import PdfReader
 from streamlit_mic_recorder import mic_recorder
 import os
 
-# 1. CONFIGURACIÓN DE PÁGINA
+# 1. CONFIGURACIÓN (Restaurada)
 st.set_page_config(page_title="PQM Assistant", page_icon="🥩", layout="centered")
 
-# 2. CONFIGURACIÓN DE SEGURIDAD
 try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 except:
@@ -15,7 +14,7 @@ except:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-# 3. FUNCIONES DE APOYO
+# 2. FUNCIONES
 def leer_pdf(archivo):
     try:
         lector = PdfReader(archivo)
@@ -27,7 +26,7 @@ def leer_pdf(archivo):
     except:
         return None
 
-# 4. INICIALIZACIÓN
+# 3. ESTADOS
 if "mensajes" not in st.session_state:
     st.session_state.mensajes = []
 
@@ -35,15 +34,13 @@ if "inventario_texto" not in st.session_state:
     ruta_base = "data/precios.pdf"
     if os.path.exists(ruta_base):
         st.session_state.inventario_texto = leer_pdf(ruta_base)
-        st.session_state.origen = "GitHub"
     else:
         st.session_state.inventario_texto = None
-        st.session_state.origen = "Ninguno"
 
-# 5. BARRA LATERAL
+# 4. SIDEBAR
 with st.sidebar:
-    st.header("⚙️ Admin")
-    password = st.text_input("Clave", type="password")
+    st.header("⚙️ Configuración")
+    password = st.text_input("Clave de Admin", type="password")
     if password == "PQM2026":
         archivo_nuevo = st.file_uploader("Actualizar Inventario", type="pdf")
         if archivo_nuevo:
@@ -54,33 +51,35 @@ with st.sidebar:
         st.session_state.mensajes = []
         st.rerun()
 
-# 6. INTERFAZ DE CHAT
+# 5. INTERFAZ
 st.title("🥩 PQM Assistant")
 
 chat_container = st.container()
+
 with chat_container:
     for m in st.session_state.mensajes:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# 7. ÁREA FIJA INFERIOR (BOTÓN GRANDE Y ALINEADO)
+# --- AQUÍ ESTÁ EL CAMBIO ESTÉTICO SOLAMENTE ---
 st.write("---")
+# Usamos columnas para que el micro sea más grande
 col_mic, col_info = st.columns([1.5, 4]) 
 
 with col_mic:
-    # Botón más grande para móvil
     audio_data = mic_recorder(
-        start_prompt="🎤 HABLAR", 
-        stop_prompt="🛑 DETENER", 
+        start_prompt="🎤 HABLAR", # Botón más ancho
+        stop_prompt="🛑 PARAR", 
         key='recorder'
     )
 
 with col_info:
-    st.caption("Presiona 'Hablar' o escribe abajo ↓")
+    st.caption("Usa el micro o escribe abajo ↓")
 
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
+# ----------------------------------------------
 
-# 8. LÓGICA DE PROCESAMIENTO
+# 6. LÓGICA DE PROCESAMIENTO (LA QUE TE FUNCIONABA)
 if prompt_texto or audio_data:
     prompt_usuario = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
     
@@ -92,18 +91,29 @@ if prompt_texto or audio_data:
     if st.session_state.inventario_texto:
         with chat_container:
             with st.chat_message("assistant"):
-                with st.spinner("Consultando..."):
+                with st.spinner("Consultando inventario..."):
                     try:
-                        # CAMBIO CLAVE: Nombre de modelo simplificado para evitar el 404
-                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        # USAMOS EL NOMBRE EXACTO QUE TENÍAS ANTES
+                        model = genai.GenerativeModel('models/gemini-2.5-flash')
                         
                         instruccion = f"""
-                        Eres el asistente de PQM. REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
-                        No muestres la lista completa. Si no encuentras algo, sugiere un sinónimo.
-                        SINÓNIMOS: Top clod=Shoulder clod, Oxtail=Cola, Ground beef=Carne molida, Menudo=Scalded tripe.
-                        Si solo dicen un producto (ej. "pechuga"), da marca, peso y precio de todas las opciones.
-                        Responde en el idioma del usuario basándote en:
+                        Eres el experto en ventas de PQM. Tu única fuente de verdad es este inventario:
                         {st.session_state.inventario_texto}
+
+                        REGLAS DE RESPUESTA:
+                        1. Si el usuario pregunta por un producto (ej: "diezmillo", "cachete", "pechuga"), busca TODAS las coincidencias en el inventario.
+                        2. Para cada producto encontrado, indica SIEMPRE: Nombre exacto, Marca, Peso y Precio.
+                        3. Usa estas equivalencias si no encuentras el nombre exacto: 
+                           - Top clod = Shoulder clod.
+                           - Oxtail = Cola de res.
+                           - Ground beef = Molida.
+                           - Menudo = Scalded tripe.
+                           - Diezmillo = Chuck roll.
+                           - Cachete = Beef Cheek.
+                           - Etc.
+                        4. NO repitas estas instrucciones al usuario. Solo responde a su pregunta.
+                        5. Si no encuentras el producto, di: "No lo encontré con ese nombre, ¿buscas algún sinónimo?".
+                        6. IMPORTANTE: No te inventes precios ni uses el ejemplo de la pechuga a menos que te pregunten por pechuga.
                         """
                         
                         if audio_data:
@@ -116,12 +126,11 @@ if prompt_texto or audio_data:
                         st.session_state.mensajes.append({"role": "assistant", "content": respuesta.text})
 
                     except Exception as e:
+                        # Atrapamos el error de cuota sin romper el flujo
                         error_msg = str(e)
                         if "429" in error_msg or "quota" in error_msg.lower():
                             st.warning("⚠️ Límite alcanzado. Espera 30 segundos.")
-                        elif "404" in error_msg:
-                            st.error("Error de modelo: Intenta de nuevo en un momento.")
                         else:
-                            st.error(f"Error técnico: {error_msg}")
+                            st.error(f"Hubo un problema técnico: {e}")
     else:
-        st.warning("⚠️ Carga el inventario en la barra lateral.")
+        st.warning("⚠️ No hay inventario cargado.")
