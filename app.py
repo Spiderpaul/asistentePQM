@@ -7,11 +7,11 @@ import os
 # 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(page_title="PQM Assistant", page_icon="🥩", layout="centered")
 
-# 2. CONFIGURACIÓN DE SEGURIDAD (API KEY DESDE SECRETS)
+# 2. CONFIGURACIÓN DE SEGURIDAD
 try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 except:
-    GOOGLE_API_KEY = "TU_CLAVE_LOCAL_TEMPORAL"
+    GOOGLE_API_KEY = "TU_CLAVE_LOCAL"
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -24,7 +24,7 @@ def leer_pdf(archivo):
             t = pagina.extract_text()
             if t: texto += t + "\n"
         return texto
-    except Exception as e:
+    except:
         return None
 
 # 4. INICIALIZACIÓN
@@ -35,22 +35,20 @@ if "inventario_texto" not in st.session_state:
     ruta_base = "data/precios.pdf"
     if os.path.exists(ruta_base):
         st.session_state.inventario_texto = leer_pdf(ruta_base)
-        st.session_state.origen = "Servidor (GitHub)"
+        st.session_state.origen = "GitHub"
     else:
         st.session_state.inventario_texto = None
         st.session_state.origen = "Ninguno"
 
 # 5. BARRA LATERAL
 with st.sidebar:
-    st.header("⚙️ Configuración")
-    password = st.text_input("Clave de Admin", type="password")
+    st.header("⚙️ Admin")
+    password = st.text_input("Clave", type="password")
     if password == "PQM2026":
         archivo_nuevo = st.file_uploader("Actualizar Inventario", type="pdf")
         if archivo_nuevo:
             st.session_state.inventario_texto = leer_pdf(archivo_nuevo)
-            st.session_state.origen = "Carga Manual"
             st.success("¡Actualizado!")
-    
     st.divider()
     if st.button("Borrar historial"):
         st.session_state.mensajes = []
@@ -60,31 +58,29 @@ with st.sidebar:
 st.title("🥩 PQM Assistant")
 
 chat_container = st.container()
-
 with chat_container:
     for m in st.session_state.mensajes:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# 7. ÁREA FIJA INFERIOR (CONTROLES MEJORADOS)
+# 7. ÁREA FIJA INFERIOR (BOTÓN GRANDE Y ALINEADO)
 st.write("---")
-# Usamos columnas para que el botón de micro sea más grande y esté junto al texto
-col_mic, col_info = st.columns([1.2, 4]) # Ajustamos el ancho para que el botón quepa bien
+col_mic, col_info = st.columns([1.5, 4]) 
 
 with col_mic:
-    # Botón de micrófono más grande agregando texto
+    # Botón más grande para móvil
     audio_data = mic_recorder(
         start_prompt="🎤 HABLAR", 
-        stop_prompt="🛑 PARAR", 
+        stop_prompt="🛑 DETENER", 
         key='recorder'
     )
 
 with col_info:
-    st.caption("Usa el micro o escribe abajo ↓")
+    st.caption("Presiona 'Hablar' o escribe abajo ↓")
 
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
-# LÓGICA DE PROCESAMIENTO
+# 8. LÓGICA DE PROCESAMIENTO
 if prompt_texto or audio_data:
     prompt_usuario = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
     
@@ -96,24 +92,17 @@ if prompt_texto or audio_data:
     if st.session_state.inventario_texto:
         with chat_container:
             with st.chat_message("assistant"):
-                with st.spinner("Consultando inventario..."):
+                with st.spinner("Consultando..."):
                     try:
-                        # USAMOS EL MODELO 1.5-FLASH QUE ES EL MÁS ESTABLE
+                        # CAMBIO CLAVE: Nombre de modelo simplificado para evitar el 404
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
                         instruccion = f"""
-                        Eres el asistente experto de PQM. 
-                        REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
-                        IMPORTANTE: No muestres la lista completa de precios, solo responde a la pregunta que se te hace. 
-                        Si no encuentras un producto, sugiere intentar con un sinónimo.
-                        Sinónimos comunes:
-                        -Top clod es shoulder clod. 
-                        -Oxtail es cola de res o colita.
-                        -Ground beef es carne molida.
-                        -Scalded tripe es menudo.
-                        
-                        Si el usuario solo dice el nombre del producto (ej. "pechuga"), muestra todas las opciones con marca, peso y precio.
-                        Responde en el idioma que te hablen basándote en:
+                        Eres el asistente de PQM. REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
+                        No muestres la lista completa. Si no encuentras algo, sugiere un sinónimo.
+                        SINÓNIMOS: Top clod=Shoulder clod, Oxtail=Cola, Ground beef=Carne molida, Menudo=Scalded tripe.
+                        Si solo dicen un producto (ej. "pechuga"), da marca, peso y precio de todas las opciones.
+                        Responde en el idioma del usuario basándote en:
                         {st.session_state.inventario_texto}
                         """
                         
@@ -129,10 +118,10 @@ if prompt_texto or audio_data:
                     except Exception as e:
                         error_msg = str(e)
                         if "429" in error_msg or "quota" in error_msg.lower():
-                            st.warning("⚠️ **PQM Assistant está tomando un respiro.** \n\nHemos alcanzado el límite de consultas. Por favor, **espera 30 segundos** y vuelve a intentarlo. 🥩")
-                        elif "safety" in error_msg.lower():
-                            st.error("No puedo responder a eso por políticas de seguridad.")
+                            st.warning("⚠️ Límite alcanzado. Espera 30 segundos.")
+                        elif "404" in error_msg:
+                            st.error("Error de modelo: Intenta de nuevo en un momento.")
                         else:
-                            st.error(f"Hubo un problema técnico: {error_msg}")
+                            st.error(f"Error técnico: {error_msg}")
     else:
-        st.warning("⚠️ No hay inventario cargado.")
+        st.warning("⚠️ Carga el inventario en la barra lateral.")
