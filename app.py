@@ -98,7 +98,17 @@ if prompt_texto or audio_data:
                         
                         instruccion = f"""
                         Eres el asistente experto de PQM. 
-                        REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb, encierra la marca entre corchetes, ejemplo: [IBP], y si no hay marca especificada en el PDF, escribe [Sin marca].
+                        REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
+                        IMPORTANTE: No muestres la lista completa de precios, solo responde a la pregunta que se te hace. 
+                        Si no encuentras un producto, puedes decir que no lo encontraste, que intenten con un sinónimo del producto.
+                        Los productos pueden tener variaciones en sus nombres, por ejemplo:
+                        -Top clod, es shoulder clod. 
+                        -Oxtail, es cola de res o colita.
+                        -Ground beef, es carne molida o molida de res.
+                        -Scalded tripe, es menudo.
+                        -Etc.
+                        Tienes libertad para preguntar si se refieren a un producto u otro si no estás seguro de que producto es el que se busca.
+
                         Responde en el idioma que te hablen basándote en:
                         {st.session_state.inventario_texto}
                         """
