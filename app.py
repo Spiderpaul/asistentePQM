@@ -71,7 +71,7 @@ st.write("---")
 c1, c2 = st.columns([1, 4])
 
 with c1:
-    # Botón más grande con texto
+    # Botón más grande con texto para mejor agarre en móvil
     audio_data = mic_recorder(
         start_prompt="🎤 HABLAR", 
         stop_prompt="🛑 PARAR", 
@@ -79,6 +79,7 @@ with c1:
     )
 
 with c2:
+    # El chat_input siempre se ancla al fondo
     prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
 # 8. LÓGICA DE PROCESAMIENTO
@@ -93,9 +94,10 @@ if prompt_texto or audio_data:
     if st.session_state.inventario_texto:
         with chat_container:
             with st.chat_message("assistant"):
-                with st.spinner("Buscando..."):
+                with st.spinner("Buscando en inventario..."):
                     try:
-                        model = genai.GenerativeModel('models/gemini-1.5-flash')
+                        # REGRESAMOS AL MODELO QUE TE FUNCIONABA
+                        model = genai.GenerativeModel('models/gemini-2.0-flash')
                         
                         instruccion = f"""
                         Eres el asistente experto de PQM. 
@@ -108,7 +110,7 @@ if prompt_texto or audio_data:
                         
                         Si solo dicen un producto (ej. "pechuga"), da TODA la info: marca, peso y precio.
                         Si no encuentras algo, sugiere un sinónimo o pregunta para aclarar.
-                        Responde en el idioma que te hablen basándote en:
+                        Responde en el idioma que te hablen basándote en este inventario:
                         {st.session_state.inventario_texto}
                         """
                         
@@ -124,7 +126,7 @@ if prompt_texto or audio_data:
                     except Exception as e:
                         error_msg = str(e)
                         if "429" in error_msg or "quota" in error_msg.lower():
-                            st.warning("⚠️ **Límite alcanzado.** Espera 30 segundos y vuelve a intentar. 🥩")
+                            st.warning("⚠️ **Límite de velocidad.** Espera unos segundos y vuelve a intentar. 🥩")
                         else:
                             st.error(f"Error técnico: {error_msg}")
     else:
