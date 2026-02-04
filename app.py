@@ -123,7 +123,7 @@ if prompt_texto or audio_data:
                         -Scalded tripe, es menudo.
                         -Etc.
                         Tienes libertad para preguntar si se refieren a un producto u otro si no estás seguro de que producto es el que se busca.
-
+                        Si la persona escribe solo el nombre del producto, por ejemplo "pechuga", escribes los nombres de productos que coincidan, sus pesos, marcas y precios (dando por hecho que el usuario quiere saber toda la información relacionada con el producto). 
                         Responde en el idioma que te hablen basándote en:
                         {st.session_state.inventario_texto}
                         """
@@ -138,6 +138,19 @@ if prompt_texto or audio_data:
                         st.markdown(respuesta.text)
                         st.session_state.mensajes.append({"role": "assistant", "content": respuesta.text})
                     except Exception as e:
-                        st.error(f"Error: {e}")
+                        error_msg = str(e)
+                        
+                        # Primero revisamos si es un error de límite de tiempo/cuota (429)
+                        if "429" in error_msg or "quota" in error_msg.lower():
+                            aviso_espera = "⚠️ **PQM Assistant está tomando un respiro.** \n\nHemos alcanzado el límite de consultas por minuto. Por favor, **espera 30 segundos** y vuelve a intentarlo. 🥩"
+                            st.warning(aviso_espera)
+                        
+                        # Si es un error de "Contenido bloqueado" (por seguridad de Google)
+                        elif "safety" in error_msg.lower():
+                            st.error("No puedo responder a eso por políticas de seguridad. Intenta preguntar de otra forma.")
+                        
+                        # Para cualquier otro error desconocido
+                        else:
+                            st.error(f"Hubo un problema técnico: {error_msg}")
     else:
         st.warning("⚠️ No hay inventario cargado.")
