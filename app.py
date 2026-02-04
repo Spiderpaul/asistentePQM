@@ -64,20 +64,35 @@ with st.sidebar:
 # 6. INTERFAZ DE CHAT
 st.title("🥩 PQM Assistant")
 
-# Contenedor para los mensajes (esto ayuda a que el scroll funcione mejor)
+# Creamos un contenedor para los mensajes
 chat_container = st.container()
 
+# Renderizamos los mensajes en el contenedor
 with chat_container:
     for m in st.session_state.mensajes:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# 7. ENTRADA DE USUARIO (EL ORDEN ES CLAVE AQUÍ)
-# Ponemos el micrófono arriba del input de texto
-st.write("---")
-audio_data = mic_recorder(start_prompt="🎤 Grabar pregunta", stop_prompt="🛑 Detener", key='recorder')
+# 7. ÁREA FIJA INFERIOR (CONTROLES)
+# Este bloque de abajo crea una sección que no se mueve con el scroll
+with st.container():
+    st.write("---") # Separador visual
+    
+    # Usamos columnas para que el botón de micro sea discreto
+    col_mic, col_info = st.columns([1, 4])
+    
+    with col_mic:
+        # Botón de micrófono
+        audio_data = mic_recorder(
+            start_prompt="🎤", 
+            stop_prompt="🛑", 
+            key='recorder'
+        )
+    
+    with col_info:
+        st.caption("Usa el micro o escribe abajo ↓")
 
-# El chat_input de Streamlit se va AUTOMÁTICAMENTE al fondo de la pantalla
+# El chat_input SIEMPRE es fijo por defecto en Streamlit
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
 # LÓGICA DE PROCESAMIENTO
