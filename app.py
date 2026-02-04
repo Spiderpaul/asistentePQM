@@ -98,7 +98,7 @@ if prompt_texto or audio_data:
                         
                         instruccion = f"""
                         Eres el asistente experto de PQM. 
-                        REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb.
+                        REGLAS: FS=Fresco, FZ=Congelado, #10=10lb, #22=22lb, encierra la marca entre corchetes, ejemplo: [IBP], y si no hay marca especificada en el PDF, escribe [Sin marca].
                         Responde en el idioma que te hablen basándote en:
                         {st.session_state.inventario_texto}
                         """
