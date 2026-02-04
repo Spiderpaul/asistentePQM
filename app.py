@@ -73,24 +73,25 @@ with chat_container:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# 7. ÁREA FIJA INFERIOR (CONTROLES)
-# Este bloque de abajo crea una sección que no se mueve con el scroll
-with st.container():
-    st.write("---") # Separador visual
-    
-    # Usamos columnas para que el botón de micro sea discreto
-    col_mic, col_info = st.columns([1, 4])
-    
-    with col_mic:
-        # Botón de micrófono
-        audio_data = mic_recorder(
-            start_prompt="🎤", 
-            stop_prompt="🛑", 
-            key='recorder'
-        )
-    
-    with col_info:
-        st.caption("Usa el micro o escribe abajo ↓")
+# 7. ÁREA DE ENTRADA (MICROFONO Y TEXTO)
+# Creamos un espacio visual
+st.write("") 
+
+# Usamos columnas con proporciones para que el micro tenga su espacio
+# La proporción [1, 5] le da un buen tamaño al botón sin estorbar
+col_mic, col_txt = st.columns([1, 5])
+
+with col_mic:
+    # Botón de micrófono más visible
+    audio_data = mic_recorder(
+        start_prompt="🎤 HABLAR", # Texto más largo para que el botón crezca
+        stop_prompt="🛑 PARAR",
+        key='recorder'
+    )
+
+with col_txt:
+    # El chat_input siempre se ancla al fondo automáticamente por Streamlit
+    prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
 # El chat_input SIEMPRE es fijo por defecto en Streamlit
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
