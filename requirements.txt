@@ -2,3 +2,4 @@ streamlit
 google-generativeai
 pypdf2
 streamlit-mic-recorder
+pydub

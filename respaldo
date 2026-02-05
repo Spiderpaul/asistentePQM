@@ -102,15 +102,9 @@ if prompt_texto or audio_data:
                         ]
 
                         # 2. Inicialización del modelo (el que te funciona)
-                        try:
-                            model_name = 'gemini-1.5-flash-latest' 
-                            model = genai.GenerativeModel(model_name=model_name, safety_settings=safety_settings)
-                            # Prueba rápida para ver si el modelo responde
-                            test_check = model.generate_content("test", generation_config={"max_output_tokens": 1})
-                        except:
-                            # Si falla el anterior, usamos el nombre genérico que nunca falla
-                            model_name = 'gemini-1.5-flash'
-                            model = genai.GenerativeModel(model_name=model_name, safety_settings=safety_settings)
+                        model_name = 'models/gemini-2.5-flash'
+                        model = genai.GenerativeModel(model_name=model_name, safety_settings=safety_settings)
+                            
                         
                         # 3. Instrucción mejorada (mantenemos tus reglas pero optimizamos el inicio)
                         instruccion = f"""
