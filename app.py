@@ -76,36 +76,38 @@ with col_info:
 
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
 
-# 6. LÓGICA DE PROCESAMIENTO CORREGIDA
+# 6. LÓGICA DE PROCESAMIENTO
 if prompt_texto or audio_data:
+    # 1. Determinar el prompt
     prompt_usuario = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
     
+    # 2. Guardar y mostrar lo que tú dijiste/escribiste
     st.session_state.mensajes.append({"role": "user", "content": prompt_usuario})
-    with chat_container:
-        with st.chat_message("user"):
-            st.markdown(prompt_usuario)
-
+    
+    # 3. PROCESAR CON LA IA
     if st.session_state.inventario_texto:
-        with chat_container:
-            with st.chat_message("assistant"):
-                with st.spinner("Consultando inventario..."):
-                    # --- SELECCIÓN DEFINITIVA DE MODELO DE PAGO ---
-                    try:
-                        # Usamos el nombre exacto del modelo estable 2.5 Flash
-                        # Este modelo tiene el mejor balance de costo/audio para tu negocio
-                        target_model = 'models/gemini-2.5-flash' 
-                        
-                        model = genai.GenerativeModel(
-                            model_name=target_model,
-                            safety_settings=[
-                                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-                                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-                                {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
-                                {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
-                            ]
-                        )
-                        st.caption(f"🚀 Motor Profesional Activo: {target_model}")
-                    except Exception as e:
-                        st.error(f"Error al conectar con el modelo: {e}")
+        with st.chat_message("assistant"): # Quitamos el container externo para probar
+            with st.spinner("Buscando en inventario..."):
+                try:
+                    # Configuración del modelo 2.5 Flash
+                    model = genai.GenerativeModel(model_name='models/gemini-2.5-flash')
+                    
+                    # (Tus instrucciones de carnicería aquí...)
+                    instruccion = f"ERES UN BUSCADOR DE PRECIOS. INVENTARIO: {st.session_state.inventario_texto}"
+                    
+                    if audio_data:
+                        contenido = [instruccion, {"mime_type": "audio/wav", "data": audio_data['bytes']}]
+                    else:
+                        contenido = [instruccion, prompt_texto]
+                    
+                    # Generar respuesta
+                    respuesta = model.generate_content(contenido)
+                    
+                    # MOSTRAR Y GUARDAR RESPUESTA
+                    st.markdown(respuesta.text)
+                    st.session_state.mensajes.append({"role": "assistant", "content": respuesta.text})
+                    
+                except Exception as e:
+                    st.error(f"Error: {e}")
     else:
-        st.warning("⚠️ No hay inventario cargado.")
+        st.warning("No hay inventario cargado.")
