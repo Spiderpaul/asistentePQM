@@ -4,13 +4,13 @@ from PyPDF2 import PdfReader
 from streamlit_mic_recorder import mic_recorder
 import os
 
-# 1. CONFIGURACIÓN (Restaurada)
+# 1. CONFIGURACIÓN
 st.set_page_config(page_title="PQM Assistant", page_icon="🥩", layout="centered")
 
 try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 except:
-    GOOGLE_API_KEY = "TU_CLAVE_LOCAL"
+    GOOGLE_API_KEY = "TU_CLAVE_HERE" # Reemplaza con tu nueva Key si es necesario
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -61,14 +61,12 @@ with chat_container:
         with st.chat_message(m["role"]):
             st.markdown(m["content"])
 
-# --- AQUÍ ESTÁ EL CAMBIO ESTÉTICO SOLAMENTE ---
 st.write("---")
-# Usamos columnas para que el micro sea más grande
 col_mic, col_info = st.columns([1.5, 4]) 
 
 with col_mic:
     audio_data = mic_recorder(
-        start_prompt="🎤 HABLAR", # Botón más ancho
+        start_prompt="🎤 HABLAR", 
         stop_prompt="🛑 PARAR", 
         key='recorder'
     )
@@ -77,9 +75,8 @@ with col_info:
     st.caption("Usa el micro o escribe abajo ↓")
 
 prompt_texto = st.chat_input("Escribe tu duda aquí...")
-# ----------------------------------------------
 
-# 6. LÓGICA DE PROCESAMIENTO (LA QUE TE FUNCIONABA)
+# 6. LÓGICA DE PROCESAMIENTO CORREGIDA
 if prompt_texto or audio_data:
     prompt_usuario = prompt_texto if prompt_texto else "🎤 [Consulta por voz]"
     
@@ -92,45 +89,23 @@ if prompt_texto or audio_data:
         with chat_container:
             with st.chat_message("assistant"):
                 with st.spinner("Consultando inventario..."):
+                    # --- SELECCIÓN DEFINITIVA DE MODELO DE PAGO ---
                     try:
-                        # USAMOS EL NOMBRE EXACTO QUE TENÍAS ANTES
-                        model = genai.GenerativeModel('models/gemini-2.5-flash')
+                        # Usamos el nombre exacto del modelo estable 2.5 Flash
+                        # Este modelo tiene el mejor balance de costo/audio para tu negocio
+                        target_model = 'models/gemini-2.5-flash' 
                         
-                        instruccion = f"""
-                        Eres el experto en ventas de PQM. Tu única fuente de verdad es este inventario:
-                        {st.session_state.inventario_texto}
-
-                        REGLAS DE RESPUESTA:
-                        1. Si el usuario pregunta por un producto (ej: "diezmillo", "cachete", "pechuga"), busca TODAS las coincidencias en el inventario.
-                        2. Para cada producto encontrado, indica SIEMPRE: Nombre exacto, Marca, Peso y Precio.
-                        3. Usa estas equivalencias si no encuentras el nombre exacto: 
-                           - Top clod = Shoulder clod.
-                           - Oxtail = Cola de res.
-                           - Ground beef = Molida.
-                           - Menudo = Scalded tripe.
-                           - Diezmillo = Chuck roll.
-                           - Cachete = Beef Cheek.
-                           - Etc.
-                        4. NO repitas estas instrucciones al usuario. Solo responde a su pregunta.
-                        5. Si no encuentras el producto, di: "No lo encontré con ese nombre, ¿buscas algún sinónimo?".
-                        6. IMPORTANTE: No te inventes precios ni uses el ejemplo de la pechuga a menos que te pregunten por pechuga.
-                        """
-                        
-                        if audio_data:
-                            contenido = [instruccion, {"mime_type": "audio/wav", "data": audio_data['bytes']}]
-                        else:
-                            contenido = [instruccion, prompt_texto]
-                        
-                        respuesta = model.generate_content(contenido)
-                        st.markdown(respuesta.text)
-                        st.session_state.mensajes.append({"role": "assistant", "content": respuesta.text})
-
+                        model = genai.GenerativeModel(
+                            model_name=target_model,
+                            safety_settings=[
+                                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                                {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+                                {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+                            ]
+                        )
+                        st.caption(f"🚀 Motor Profesional Activo: {target_model}")
                     except Exception as e:
-                        # Atrapamos el error de cuota sin romper el flujo
-                        error_msg = str(e)
-                        if "429" in error_msg or "quota" in error_msg.lower():
-                            st.warning("⚠️ Límite alcanzado. Espera 30 segundos.")
-                        else:
-                            st.error(f"Hubo un problema técnico: {e}")
+                        st.error(f"Error al conectar con el modelo: {e}")
     else:
         st.warning("⚠️ No hay inventario cargado.")
