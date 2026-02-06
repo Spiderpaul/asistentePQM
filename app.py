@@ -136,7 +136,9 @@ INSTRUCCIONES:
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
-* FZ o FS, **Producto** marca: Costo X.XX | Precio: **X.XX**
+* FZ o FS, **Producto** marca: Precio: **X.XX**
+Si el usuario te pide que especifiques el costo del producto, puedes agregarlo así:
+* FZ o FS, **Producto** marca: Costo: X.XX Precio: **X.XX**
 (NO uses backticks ` ni comillas simples/dobles alrededor de los números)
 
 
