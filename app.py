@@ -120,7 +120,7 @@ INSTRUCCIONES:
 - Muestra FZ o FS (si existe), nombre, marca (Si existe), peso (Si existe), costo y precio al cliente, poniendo siempre el signo $ antes de los números
 - FZ significa congelado.
 - FS significa fresco.
-- Si no existe marca, muestra "Sin marca"
+- Si no existe marca, no es necesario escrir nada, solo el nombre del producto
 - Algunos productos son de peso fijo y tienen el peso en libras justo en frente del nombre, por ejemplo "Sausage Party 10 lb" en esos casos es importante mostrar el peso
 - Algunos pesos en vez de decir "10 lb", dicen "10#" o "#10", por ejemplo "Bacon Economy #10" que es de 10 lb
 - Si en vez de precio o costo ves un espacio vació, o que dice DP o Fernando, escribe N/A 
@@ -136,7 +136,7 @@ INSTRUCCIONES:
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
-* FZ o FS, **Producto:** marca, Costo X.XX | **Precio:** X.XX
+* FZ o FS, **Producto** marca: Costo X.XX | Precio: **X.XX**
 (NO uses backticks ` ni comillas simples/dobles alrededor de los números)
 
 
