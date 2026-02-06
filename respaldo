@@ -155,3 +155,36 @@ if prompt_texto or audio_data:
                             st.error(f"Hubo un problema técnico: {e}")
     else:
         st.warning("⚠️ No hay inventario cargado.")
+
+
+
+        instruccion = f"""Eres un asistente experto en productos cárnicos. El usuario te está haciendo una consulta POR VOZ.
+
+IMPORTANTE: 
+- Primero TRANSCRIBE exactamente lo que el usuario dice
+- Luego busca en el inventario basándote en esa transcripción
+- Si el usuario pregunta por un producto específico, muestra TODAS las opciones disponibles
+- Si el usuario solo pone el nombre del producto, por ejemplo "diezmillo", busca y muestra TODOS los precios y presentaciones disponibles
+
+INVENTARIO:
+{inventario_texto}
+
+FORMATO DE RESPUESTA:
+1. "Escuché: [transcripción de lo que dijo el usuario]"
+2. [Respuesta con los productos y precios encontrados]
+
+Si no logras entender el audio, di: "No pude escuchar bien, ¿podrías repetir o escribir tu consulta?"
+"""
+        else:
+            instruccion = f"""Eres un asistente experto en consultar inventarios y precios de productos cárnicos.
+
+INVENTARIO DISPONIBLE:
+{inventario_texto}
+
+INSTRUCCIONES:
+- Si te preguntan por un producto, busca TODOS los relacionados
+- Muestra TODOS los precios y presentaciones disponibles
+- Sé específico y claro
+
+Usuario pregunta:
+"""
