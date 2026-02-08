@@ -5,6 +5,7 @@ from streamlit_mic_recorder import mic_recorder
 from openai import OpenAI
 import streamlit as st
 from PIL import Image
+import streamlit.components.v1 as components
 import os
 import tempfile
 import subprocess
@@ -12,6 +13,16 @@ import subprocess
 # =======================
 # CONFIGURACIÓN GENERAL
 # =======================
+
+# Agregar manifest para PWA
+components.html(
+    """
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#d63031">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    """,
+    height=0
+)
 
 # Cargar la imagen del logo
 try:
