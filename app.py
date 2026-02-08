@@ -183,7 +183,7 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Sausage party = sausage patties, salchichas party, sausage patty
 - T-Fillet 3-5 IVF = filete 3-5 individual
 - Thigh meat boneless fresh (pollo) = x fresh, t meat fresh, tmeat fresh, x fresco, t meat fresco, tmeat fresco
-- Thigh meat boneless frozen (pollo) = x, tmeat, t meat, x frozen, t meat frozen, tmeat frozen
+- Thigh meat boneless frozen (pollo) = x (a veces el usuario escribe solo una x), tmeat, t meat, x frozen, t meat frozen, tmeat frozen
 - Breast meat boneless fresh (pollo) = fresca, pechuga fresca
 - Thigh Meat Boneles Wayne Wayne = wayne, tmeat wayne, thigh wayne
 - thigh meat boneless P170 = p170, wayne p170, tmeat p170
@@ -246,7 +246,7 @@ with st.sidebar:
         "🎤 Habla claro\n"
         "Ejemplos:\n"
         "- Precio del ribeye\n"
-        "- Cuánto cuesta el camarón"
+        "- Cuánto cuesta el diezmillo"
     )
 
     if st.button("🗑️ Borrar historial"):
