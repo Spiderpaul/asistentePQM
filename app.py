@@ -227,7 +227,6 @@ if "audio_procesado" not in st.session_state:
 # =======================
 
 with st.sidebar:
-    st.image("logo_pqm.png", width=100) # Esto pone tu logo pequeñito en el menú
     st.header("⚙️ Configuración")
 
     password = st.text_input("Clave Admin", type="password")
