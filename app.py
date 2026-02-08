@@ -259,7 +259,7 @@ with st.sidebar:
 # INTERFAZ
 # =======================
 
-st.title("🥩 PQM Assistant")
+st.title(img_logo + " PQM Assistant")
 st.caption("Consulta precios del inventario")
 
 for msg in st.session_state.mensajes:
