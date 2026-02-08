@@ -3,6 +3,8 @@ import google.generativeai as genai
 from PyPDF2 import PdfReader
 from streamlit_mic_recorder import mic_recorder
 from openai import OpenAI
+import streamlit as st
+from PIL import Image
 import os
 import tempfile
 import subprocess
@@ -11,9 +13,15 @@ import subprocess
 # CONFIGURACIÓN GENERAL
 # =======================
 
+# Cargar la imagen del logo
+try:
+    img_logo = Image.open("assets/PQMLogo.png")
+except:
+    img_logo = "🥩"
+
 st.set_page_config(
     page_title="PQM Assistant",
-    page_icon="🥩",
+    page_icon=img_logo,
     layout="centered"
 )
 
@@ -174,6 +182,11 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Links (Pork) = sausage, pork links, sausage pork
 - Sausage party = sausage patties, salchichas party, sausage patty
 - T-Fillet 3-5 IVF = filete 3-5 individual
+- Thigh meat boneless fresh (pollo) = x fresh, t meat fresh, tmeat fresh, x fresco, t meat fresco, tmeat fresco
+- Thigh meat boneless frozen (pollo) = x, tmeat, t meat, x frozen, t meat frozen, tmeat frozen
+- Breast meat boneless fresh (pollo) = fresca, pechuga fresca
+- Thigh Meat Boneles Wayne Wayne = wayne, tmeat wayne, thigh wayne
+- thigh meat boneless P170 = p170, wayne p170, tmeat p170
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
 
 CONSULTA:
