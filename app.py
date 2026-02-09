@@ -177,6 +177,7 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Oxtail = cola de res, colita
 - Shank cut = caldo cut, caldo, shank cortado
 - shank = Foreshank, chamberete, chamorro
+- Shank SW (Swift) = shank 5 star
 - Top clod = shoulder clod, shoulder cloud
 - Honeycomb = panal
 - Honeycomb A & A = honeycomb azul
@@ -199,6 +200,9 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Breast meat boneless fresh (pollo) = fresca, pechuga fresca
 - Thigh Meat Boneles Wayne Wayne = wayne, tmeat wayne, thigh wayne
 - thigh meat boneless P170 = p170, wayne p170, tmeat p170
+- Flap Meat = flap, ranchera, arrachera
+- Shoulder clod = Top clod, clod, espaldilla
+- Bottom Round flat = palomilla
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
 
 CONSULTA:
