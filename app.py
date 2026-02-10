@@ -136,6 +136,7 @@ INVENTARIO:
 {inventario_texto}
 
 INSTRUCCIONES:
+- Analiza si el documento PDF ha sufrido algún cambio o actualización antes de responder, si detectas algún cambio en las fechas o en algún precio de producto, quiere decir que se ha actualizado el documento, siempre da precios actualizados. 
 - Busca TODOS los productos relacionados con la consulta
 - Muestra FZ o FS (si existe), nombre, marca (Si existe), peso (Si existe), costo y precio al cliente, poniendo siempre el signo $ antes de los números
 - FZ significa congelado.
