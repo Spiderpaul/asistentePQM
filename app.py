@@ -15,6 +15,10 @@ import base64
 # CONFIGURACIÓN GENERAL
 # =======================
 
+# Guardar el documento PDF
+preciosURL = "data/precios.pdf"
+
+
 # Cargar la imagen del logo
 try:
     img_logo = Image.open("assets/PQMLogo.png")
@@ -136,7 +140,6 @@ INVENTARIO:
 {inventario_texto}
 
 INSTRUCCIONES:
-- Analiza si el documento PDF ha sufrido algún cambio o actualización antes de responder, si detectas algún cambio en las fechas o en algún precio de producto, quiere decir que se ha actualizado el documento, siempre da precios actualizados. 
 - Busca TODOS los productos relacionados con la consulta
 - Muestra FZ o FS (si existe), nombre, marca (Si existe), peso (Si existe), costo y precio al cliente, poniendo siempre el signo $ antes de los números
 - FZ significa congelado.
@@ -229,7 +232,7 @@ if "mensajes" not in st.session_state:
     st.session_state.mensajes = []
 
 if "inventario_texto" not in st.session_state:
-    ruta = "data/precios.pdf"
+    ruta = preciosURL
     if os.path.exists(ruta):
         st.session_state.inventario_texto = leer_pdf(ruta)
     else:
