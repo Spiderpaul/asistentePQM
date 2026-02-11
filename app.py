@@ -158,6 +158,15 @@ INSTRUCCIONES:
 - Cualquier queso en block o bloque, no tienen peso fijo y suelen tener un precio menor
 - La lista contiene errores de captura, por ejemplo "scaladed" en vez de "scalded", toma en cuenta esos pequeños errores e interpretalos correctamente
 
+Importante: 
+Te comparto productos que no están en el PDF pero que se están manejando:
+- Sazonador Adobo: $66.99
+
+Los siguientes productos tienen nuevos precios, ignora los precios que aparecen en el PDF:
+- Egg Med: $19.99
+- Egg XL: $25.99
+- Egg L-12: $25.99
+
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
 * FZ o FS, **Producto** marca: Precio: **X.XX**
@@ -207,6 +216,7 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Flap Meat = flap, ranchera, arrachera
 - Shoulder clod = Top clod, clod, espaldilla
 - Bottom Round flat = palomilla
+- Willota = Guilota
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
 
 CONSULTA:
