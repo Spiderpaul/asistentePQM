@@ -217,6 +217,8 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Shoulder clod = Top clod, clod, espaldilla
 - Bottom Round flat = palomilla
 - Willota = Guilota
+- Margarine = margarina, mantequilla
+- Dish Detergent = soap, jabón, detergente, dish
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
 
 CONSULTA:
