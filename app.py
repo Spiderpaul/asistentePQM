@@ -166,6 +166,7 @@ Los siguientes productos tienen nuevos precios, ignora los precios que aparecen 
 - Egg Med: $19.99
 - Egg XL: $25.99
 - Egg L-12: $25.99
+- Cup 0.70 oz: $18.99 (lid 0.77 oz sigue costando $17.99).
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
@@ -213,10 +214,12 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Breast meat boneless fresh (pollo) = fresca, pechuga fresca
 - Thigh Meat Boneles Wayne Wayne = wayne, tmeat wayne, thigh wayne
 - thigh meat boneless P170 = p170, wayne p170, tmeat p170
+- Gizzards = molleja, grizzarrds (tiene peso fijo de 30lb)
 - Flap Meat = flap, ranchera, arrachera
 - Shoulder clod = Top clod, clod, espaldilla
 - Bottom Round flat = palomilla
 - Willota = Guilota
+- Tortilla taco #4 blanca y am = Tortilla chip, tortilla chip amarilla
 - Margarine = margarina, mantequilla
 - Dish Detergent = soap, jabón, detergente, dish
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
