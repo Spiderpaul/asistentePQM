@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/precios.pdf"
+preciosURL = "data/PQM_021626.pdf"
 
 
 # Cargar la imagen del logo
@@ -157,16 +157,15 @@ INSTRUCCIONES:
 - El queso Jack, Cheeddar, Mozzarella, 80/10/10/, Mix o (50/50), feather o fancy, cuestan regulamente lo mismo y pesan lo mismo "20 lb la caja de 4 piezas o bolsas de 5 lb"
 - Cualquier queso en block o bloque, no tienen peso fijo y suelen tener un precio menor
 - La lista contiene errores de captura, por ejemplo "scaladed" en vez de "scalded", toma en cuenta esos pequeños errores e interpretalos correctamente
+- Solo muestra al usuario la columna que dice "Costumer Price" como precio al cliente, no muestres la columna "This Week Price" porque ese es el precio de compra, no de venta.
+- Si el usuario te pide específicamente que muestres el costo del producto, entonces si puedes mostrar la cantidad que se encuentra en la columna "This Week Price"
 
 Importante: 
 Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
 
 Los siguientes productos tienen nuevos precios, ignora los precios que aparecen en el PDF:
-- Egg Med: $19.99
-- Egg XL: $25.99
-- Egg L-12: $25.99
-- Cup 0.70 oz: $18.99 (lid 0.77 oz sigue costando $17.99).
+- Cup 0.75 oz: $18.99 (lid 0.75 oz sigue costando $17.99).
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
@@ -219,6 +218,7 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Shoulder clod = Top clod, clod, espaldilla
 - Bottom Round flat = palomilla
 - Willota = Guilota
+- Cod Battered 3 Oz16/24 = pescado empanizado
 - Tortilla taco #4 blanca y am = Tortilla chip, tortilla chip amarilla
 - Margarine = margarina, mantequilla
 - Dish Detergent = soap, jabón, detergente, dish
