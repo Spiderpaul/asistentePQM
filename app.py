@@ -165,7 +165,20 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
 
 Los siguientes productos tienen nuevos precios, ignora los precios que aparecen en el PDF:
-- Cup 0.75 oz: $18.99 (lid 0.75 oz sigue costando $17.99).
+- Cup 0.75 oz: $18.99 (lid 0.75 oz sigue costando $17.99)
+- Chuck roll choice (St. Helens o WB): $5.65
+- Shoulder clod o top clod (St. Helens o WB): $4.79
+- Top round (St. Helens o WB): $4.99
+- Bottom round (St. Helens o WB): $5.15
+- Eye round (St. Helens o WB): $4.99
+- Peeled Knuckles (St. Helens o WB): $5.09
+- Inside skirt (St. Helens o WB): $8.19
+- Short Ribs (St. Helens o WB): $6.39
+- Ground beef (St. Helens o WB): $4.25
+- Lengua (St. Helens o WB): $6.99
+- Marrow gut (St. Helens o WB): $2.05
+- Oxtail (St. Helens o WB): $7.39
+- Liver (St. Helens o WB): 1.99 
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
