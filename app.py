@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/PQM_030226.pdf"
+preciosURL = "data/PQM_032326.pdf"
 
 
 # Cargar la imagen del logo
@@ -163,22 +163,43 @@ INSTRUCCIONES:
 Importante: 
 Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
+- Contenedor #1: $24.99
+- Roma Tomato (tomate): 42.99
+- Tomatillo Peeled (flesh): $54.99
+- Cilantro: 25.99
+- Cilantro en pieza: $0.69
+- Jalapeño fresco: %58.99
+- Mexican onion: $19.99
+- White Onion: $31.99
+- Red Onion: $14.99
+- Yellow Onion: $11.99
+- Purple Onion: $14.99
+- Avocado: $49.99
+- Radish (rábano): $34.99
+- Carrot: $24.99
+- Bell Pepper Green: $54.99
+- Bell Pepper Red: $45.99
+- Serrano pepper: 58.99
+- Limes/Lemon: $79.99
+- Lettuce: $39.99
+- Cucumber (pepino): $65.99
+- Nopal: $38.99
+- Potatoe: $14.99
+- Habanero: 6.99
+- Orange: $28.99
+- Canela: $8.79
+- Chile Serrano: $44.99
+- Calabaza mexicana_ 24.99
+- Chayote: $39.99
+- Sangria: $8.79
+- Queso Cotija por pieza: $6.55
+- Salsa Enchilada Victoria: $52.99
 
-Los siguientes productos tienen nuevos precios, ignora los precios que aparecen en el PDF:
-- Cup 0.75 oz: $18.99 (lid 0.75 oz sigue costando $17.99)
-- Chuck roll choice (St. Helens o WB): $5.65
-- Shoulder clod o top clod (St. Helens o WB): $4.79
-- Top round (St. Helens o WB): $4.99
-- Bottom round (St. Helens o WB): $5.15
-- Eye round (St. Helens o WB): $4.99
-- Peeled Knuckles (St. Helens o WB): $5.09
-- Inside skirt (St. Helens o WB): $8.19
-- Short Ribs (St. Helens o WB): $6.39
-- Ground beef (St. Helens o WB): $4.25
-- Lengua (St. Helens o WB): $6.99
-- Marrow gut (St. Helens o WB): $2.05
-- Oxtail (St. Helens o WB): $7.39
-- Liver (St. Helens o WB): 1.99 
+
+
+
+
+
 
 FORMATO DE RESPUESTA:
 Al mostrar precios, usa este formato:
@@ -194,7 +215,7 @@ IMPORTANTE:
 - Intenta ser directo, claro y breve en tus respuestas si las preguntas son simples y claras, pero si tienes dudas sobre lo que intenta pedir el usuario, puedes preguntar o dar información extra al usuario.  
 
 DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquiales o muy imprecisas, aquí te pongo algunos ejemplos)
-- Chuck roll = Diezmillo, chuck
+- Chuck roll = Diezmillo, chuck, fajitas de res
 - Cheek = cachete, chek
 - Feet Cut = pata SK, pata Su Karne, pata cortada
 - Ground beef patty = molida, hamburguesa, amburguesa, ground party o ground beef party
@@ -235,6 +256,15 @@ DICCIONARIO: (El usuario puede usar palabras en inglés o en español, coloquial
 - Tortilla taco #4 blanca y am = Tortilla chip, tortilla chip amarilla
 - Margarine = margarina, mantequilla
 - Dish Detergent = soap, jabón, detergente, dish
+- 26/30 broke = 26/30 PDT ON Cooked
+- Boneless stew = Beef for stew
+- Chuletón = Chuck bone in
+- Towel Roll Natural 8" = Papel para manos
+- Towel Centerpull 2ply = Papel para dispensador
+- Toilet Tissue 9” 2ply = Papel para baño
+
+
+
 (Los usuarios pueden usar palabras muy confusas a veces, puedes preguntarles si se refieren a algún producto que te parezca que coincida) 
 
 CONSULTA:
