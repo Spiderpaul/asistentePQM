@@ -164,7 +164,7 @@ Importante:
 Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
 - Contenedor #1: $24.99
-- Roma Tomato (tomate): 42.99
+- Roma Tomato (tomate): 59.99
 - Tomatillo Peeled (flesh): $54.99
 - Cilantro: 25.99
 - Cilantro en pieza: $0.69
@@ -180,7 +180,7 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Bell Pepper Green: $54.99
 - Bell Pepper Red: $45.99
 - Serrano pepper: 58.99
-- Limes/Lemon: $79.99
+- Limes/Lemon: $85.00
 - Lettuce: $39.99
 - Cucumber (pepino): $65.99
 - Nopal: $38.99
@@ -193,6 +193,7 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Chayote: $39.99
 - Sangria: $8.79
 - Queso Cotija por pieza: $6.55
+- Queso fresco por pieza: $39.99
 - Salsa Enchilada Victoria: $52.99
 
 
