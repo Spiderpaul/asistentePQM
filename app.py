@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/PQM_032326.pdf"
+preciosURL = "data/PQM_033026.pdf"
 
 
 # Cargar la imagen del logo
@@ -165,10 +165,10 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
 - Contenedor #1: $24.99
 - Roma Tomato (tomate): 59.99
-- Tomatillo Peeled (flesh): $54.99
+- Tomatillo Peeled (flesh): $59.99
 - Cilantro: 25.99
 - Cilantro en pieza: $0.69
-- Jalapeño fresco: %58.99
+- Jalapeño fresco: %66.99
 - Mexican onion: $19.99
 - White Onion: $31.99
 - Red Onion: $14.99
@@ -179,8 +179,8 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Carrot: $24.99
 - Bell Pepper Green: $54.99
 - Bell Pepper Red: $45.99
-- Serrano pepper: 58.99
-- Limes/Lemon: $85.00
+- Serrano pepper: 66.99
+- Limes/Lemon: $94.99
 - Lettuce: $39.99
 - Cucumber (pepino): $65.99
 - Nopal: $38.99
@@ -197,7 +197,8 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Salsa Enchilada Victoria: $52.99
 
 
-
+Importante: Ignora el precio del octopus 6/8 que aparece en el documento PDF, su precio ha subido, te comparto el nuevo precio.
+- Octopus 6/8: $4.59 
 
 
 
