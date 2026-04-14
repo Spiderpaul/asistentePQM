@@ -197,10 +197,8 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Salsa Enchilada Victoria: $52.99
 
 
-Importante: Ignora el precio del octopus 6/8 que aparece en el documento PDF, su precio ha subido, te comparto el nuevo precio.
-- Octopus 6/8: $4.59 
-
-
+Importante: Ignora el precio del huevo xl que aparece en el documento PDF, su precio ha cambiado, te comparto el nuevo precio.
+- Egg XL 15dz AA: $18.99 
 
 
 FORMATO DE RESPUESTA:
