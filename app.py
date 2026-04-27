@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/PQM_042026.pdf"
+preciosURL = "data/PQM_042726.pdf"
 
 
 # Cargar la imagen del logo
@@ -171,15 +171,15 @@ Te comparto productos que no están en el PDF pero que se están manejando:
 - Mexican onion: $19.99
 - White Onion: $31.99
 - Red Onion: $14.99
-- Yellow Onion: $11.99
+- Yellow Onion: $19.99
 - Purple Onion: $14.99
 - Avocado: $49.99
 - Radish (rábano): $34.99
 - Carrot: $24.99
 - Bell Pepper Green: $54.99
 - Bell Pepper Red: $45.99
-- Serrano pepper: 66.99
-- Limes/Lemon: $84.99
+- Serrano pepper: 84.99
+- Limes/Lemon: $69.99
 - Lettuce: $54.99
 - Cucumber (pepino): $65.99
 - Nopal: $38.99
