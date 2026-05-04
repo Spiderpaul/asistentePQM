@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/PQM_042726.pdf"
+preciosURL = "data/PQM_050426.pdf"
 
 
 # Cargar la imagen del logo
@@ -164,23 +164,23 @@ Importante:
 Te comparto productos que no están en el PDF pero que se están manejando:
 - Sazonador Adobo: $66.99
 - Contenedor #1: $24.99
-- Roma Tomato (tomate): 59.99
-- Tomatillo Peeled (flesh): $59.99
+- Roma Tomato (tomate): $69.99
+- Tomatillo Peeled (flesh): $39.99
 - Cilantro: 28.99
-- Jalapeño fresco: %66.99
+- Jalapeño fresco: $55.99
 - Mexican onion: $19.99
 - White Onion: $31.99
 - Red Onion: $14.99
-- Yellow Onion: $19.99
+- Yellow Onion: $24.99
 - Purple Onion: $14.99
-- Avocado: $49.99
+- Avocado: $51.99
 - Radish (rábano): $34.99
 - Carrot: $24.99
 - Bell Pepper Green: $54.99
 - Bell Pepper Red: $45.99
 - Serrano pepper: 84.99
 - Limes/Lemon: $69.99
-- Lettuce: $54.99
+- Lettuce: $65.99
 - Cucumber (pepino): $65.99
 - Nopal: $38.99
 - Potatoe: $14.99
