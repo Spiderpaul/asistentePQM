@@ -16,7 +16,7 @@ import base64
 # =======================
 
 # Guardar el documento PDF
-preciosURL = "data/PQM_050426.pdf"
+preciosURL = "data/PQM_051126.pdf"
 
 
 # Cargar la imagen del logo
